@@ -3,8 +3,24 @@ export async function onRequestPost({ request, env }) {
     const data = await request.json();
 
     // Basic validation
-    if (!data.fullName || !data.email || !data.company) {
+    if (!data.fullName || !data.email || !data.phone || !data.company) {
       return new Response(JSON.stringify({ success: false, error: 'Missing required fields' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid email format' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    if (!phoneRegex.test(data.phone)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid phone format' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -23,9 +39,10 @@ export async function onRequestPost({ request, env }) {
         <h2>New Strategy Session Request</h2>
         <p><strong>Name:</strong> ${data.fullName}</p>
         <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Phone:</strong> ${data.phone}</p>
         <p><strong>Company:</strong> ${data.company}</p>
       `,
-      text_body: `Name: ${data.fullName}\nEmail: ${data.email}\nCompany: ${data.company}`
+      text_body: `Name: ${data.fullName}\nEmail: ${data.email}\nPhone: ${data.phone}\nCompany: ${data.company}`
     };
 
     const response = await fetch(endpoint, {
