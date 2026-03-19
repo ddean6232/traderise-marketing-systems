@@ -89,3 +89,50 @@ window.addEventListener('scroll', () => {
         setTimeout(() => statValues[0].innerHTML = '158', 3000);
     }
 });
+
+// Form Submission handling
+const contactForm = document.getElementById('contactForm');
+const formMessage = document.getElementById('formMessage');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        formMessage.style.display = 'none';
+        
+        const formData = new FormData(contactForm);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                formMessage.textContent = 'Thanks! Your request has been sent successfully.';
+                formMessage.style.color = '#4ade80'; // Success green
+                contactForm.reset();
+            } else {
+                formMessage.textContent = result.error || 'Oops! Something went wrong. Please try again.';
+                formMessage.style.color = '#f87171'; // Error red
+            }
+        } catch (error) {
+            formMessage.textContent = 'Network error. Please try again later.';
+            formMessage.style.color = '#f87171';
+        } finally {
+            formMessage.style.display = 'block';
+            submitBtn.textContent = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    });
+}

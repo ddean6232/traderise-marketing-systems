@@ -216,17 +216,18 @@
                 <h2 class="cta-title">We Build That System.</h2>
                 <p class="cta-subtitle">Stop settling for low conversion rates. Book a strategy session to see how we
                     can transform your business.</p>
-                <form class="cta-form">
+                <form id="contactForm" class="cta-form">
                     <div class="form-group">
-                        <input type="text" placeholder="Full Name" required>
+                        <input type="text" name="fullName" placeholder="Full Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" placeholder="Email Address" required>
+                        <input type="email" name="email" placeholder="Email Address" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Company Name" required>
+                        <input type="text" name="company" placeholder="Company Name" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Book Strategy Session</button>
+                    <div id="formMessage" style="display: none; margin-top: 1rem; text-align: center; color: #fff;"></div>
                 </form>
             </div>
         </div>
