@@ -26,36 +26,36 @@ export async function onRequestPost({ request, env }) {
       });
     }
 
-    // SMTP2GO API Endpoint
-    const endpoint = "https://api.smtp2go.com/v3/email/send";
+    // Resend API Endpoint
+    const endpoint = "https://api.resend.com/emails";
     
     // Construct the email payload
     const payload = {
-      api_key: env.SMTP2GO_API_KEY,
+      from: "Traderise <info@dtreeind.com>",
       to: ["traderisemarketing@outlook.com"],
-      sender: "info@dtreeind.com",
       subject: "New Strategy Session Request - Traderise",
-      html_body: `
+      html: `
         <h2>New Strategy Session Request</h2>
         <p><strong>Name:</strong> ${data.fullName}</p>
         <p><strong>Email:</strong> ${data.email}</p>
         <p><strong>Phone:</strong> ${data.phone}</p>
         <p><strong>Company:</strong> ${data.company}</p>
       `,
-      text_body: `Name: ${data.fullName}\nEmail: ${data.email}\nPhone: ${data.phone}\nCompany: ${data.company}`
+      text: `Name: ${data.fullName}\nEmail: ${data.email}\nPhone: ${data.phone}\nCompany: ${data.company}`
     };
 
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${env.RESEND_API_KEY}`
       },
       body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.data.error || "Failed to send email via SMTP2GO");
+        throw new Error(errorData.message || "Failed to send email via Resend");
     }
 
     return new Response(JSON.stringify({ success: true, message: "Email sent successfully" }), {
