@@ -1,3 +1,4 @@
+// v1.0.1 - Triggering build with new environment variables
 export async function onRequestPost({ request, env }) {
   try {
     const data = await request.json();
