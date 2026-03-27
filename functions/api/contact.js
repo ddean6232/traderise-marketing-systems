@@ -1,4 +1,4 @@
-// v1.0.5 - Reverting to Cloudflare Environment Variables (GHL_WEBHOOK_URL)
+// v1.0.6 - Build Trigger for GHL environment variable test
 export async function onRequestPost({ request, env }) {
   try {
     const data = await request.json();
