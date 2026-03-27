@@ -1,4 +1,4 @@
-// v1.0.1 - Triggering build with new environment variables
+// v1.0.2 - Triggering build with GHL_WEBHOOK_URL integrated
 export async function onRequestPost({ request, env }) {
   try {
     const data = await request.json();
