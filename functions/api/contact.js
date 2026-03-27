@@ -1,4 +1,4 @@
-// v1.0.3 - Final Build: Exclusively GoHighLevel (GHL) Webhook
+// v1.0.4 - Direct GHL Integration (Zero-Config Build)
 export async function onRequestPost({ request, env }) {
   try {
     const data = await request.json();
@@ -29,10 +29,8 @@ export async function onRequestPost({ request, env }) {
       });
     }
 
-    // 4. Dispatch ONLY to GoHighLevel (via environment variable GHL_WEBHOOK_URL)
-    if (!env.GHL_WEBHOOK_URL) {
-      throw new Error("GHL_WEBHOOK_URL is not configured in Cloudflare.");
-    }
+    // 4. Dispatch ONLY to GoHighLevel (Direct URL)
+    const ghlWebhookUrl = "https://services.leadconnectorhq.com/hooks/f23qw5Er9sX7IiGsrvQa/webhook-trigger/67e172b7-cdb4-48f9-935b-2d32173218ef";
 
     const ghlPayload = {
       fullName: data.fullName,
@@ -43,7 +41,7 @@ export async function onRequestPost({ request, env }) {
       timestamp: new Date().toISOString()
     };
 
-    const ghlResponse = await fetch(env.GHL_WEBHOOK_URL, {
+    const ghlResponse = await fetch(ghlWebhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(ghlPayload)
