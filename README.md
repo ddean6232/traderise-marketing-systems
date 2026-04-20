@@ -22,9 +22,11 @@ Unlike traditional "lead gen" sites, Traderise focuses on **"After The Click"** 
 
 ## ⚙️ Configuration
 
-To run the lead capture system, the following environment variables are required in your Cloudflare Pages project:
+The following environment variables are set in the Cloudflare Pages project:
 
-- `RESEND_API_KEY`: Your Resend API key for email delivery.
+- `GHL_WEBHOOK_URL`: ✅ **Configured** — GoHighLevel Inbound Webhook URL (Workflow trigger). No API token required; the URL itself serves as authentication. Leads are routed directly from the edge function to GHL on form submission.
+
+> **Note:** The original Resend email delivery has been replaced by the GHL webhook integration. All form submissions now flow directly into GoHighLevel for CRM contact creation and workflow automation.
 
 ## 🌐 Deployment
 
